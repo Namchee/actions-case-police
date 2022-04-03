@@ -2,24 +2,15 @@ package repository
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/fs"
 )
 
-var (
-	filenames = []string{
-		"abbreviates.json",
-		"brands.json",
-		"general.json",
-		"products.json",
-		"softwares.json",
-	}
-)
-
 // GetDictionary returns word-to-word mapping dictionary
-func GetDictionary(fsys fs.FS) map[string]string {
+func GetDictionary(fsys fs.FS, files []string) map[string]string {
 	dict := make(map[string]string)
 
-	for _, filename := range filenames {
+	for _, filename := range files {
 		fileDict := parseDictionaryFile(fsys, filename)
 
 		for k, v := range fileDict {
@@ -32,6 +23,8 @@ func GetDictionary(fsys fs.FS) map[string]string {
 
 func parseDictionaryFile(fsys fs.FS, filename string) map[string]string {
 	file, err := fsys.Open(filename)
+
+	fmt.Println(err)
 
 	if err != nil {
 		return map[string]string{}
