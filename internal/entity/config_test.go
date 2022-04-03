@@ -39,6 +39,32 @@ func TestReadConfiguration(t *testing.T) {
 			},
 		},
 		{
+			name: "should fallback to default preset on illegal values",
+			mocks: map[string]string{
+				"INPUT_GITHUB_TOKEN": "foo_bar",
+				"INPUT_FIX":          "true",
+				"INPUT_PRESET":       "foo bar",
+				"INPUT_DICTIONARY":   "{\"foo\": \"bar\"}",
+			},
+			want: expected{
+				config: &Configuration{
+					Token: "foo_bar",
+					Fix:   true,
+					Preset: []string{
+						"abbreviates",
+						"brands",
+						"general",
+						"products",
+						"softwares",
+					},
+					Dictionary: map[string]string{
+						"foo": "bar",
+					},
+				},
+				err: nil,
+			},
+		},
+		{
 			name:  "should throw an error when token is empty",
 			mocks: map[string]string{},
 			want: expected{

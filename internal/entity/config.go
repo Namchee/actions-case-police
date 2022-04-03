@@ -39,7 +39,7 @@ func ReadConfiguration() (*Configuration, error) {
 		Preset: defaultPreset,
 	}
 
-	preset := utils.ReadEnvStringArray("INPUT_PRESET")
+	preset := validatePresets(utils.ReadEnvStringArray("INPUT_PRESET"))
 	if len(preset) > 0 {
 		config.Preset = preset
 	}
@@ -53,4 +53,17 @@ func ReadConfiguration() (*Configuration, error) {
 	}
 
 	return config, nil
+}
+
+// validatePresets validates and return valid presets from user inputs
+func validatePresets(presets []string) []string {
+	var newPresets []string
+
+	for _, preset := range presets {
+		if utils.ContainsString(defaultPreset, preset) {
+			newPresets = append(newPresets, preset)
+		}
+	}
+
+	return newPresets
 }
