@@ -1,12 +1,14 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os"
 
 	"github.com/Namchee/actions-case-police/internal"
 	"github.com/Namchee/actions-case-police/internal/entity"
 	"github.com/Namchee/actions-case-police/internal/repository"
+	"github.com/Namchee/actions-case-police/internal/utils"
 	"github.com/fatih/color"
 )
 
@@ -21,6 +23,8 @@ func init() {
 }
 
 func main() {
+	ctx := context.Background()
+
 	cfg, err := entity.ReadConfiguration()
 	if err != nil {
 		errorLogger.Println(err)
@@ -28,9 +32,34 @@ func main() {
 	}
 
 	cwd, _ := os.Getwd()
-	fsys := os.DirFS(fmt.Sprintf("%s/%s", cwd, "dict"))
 
-	dictionary := repository.GetDictionary(fsys, cfg.Preset)
+	meta, err := entity.CreateMeta(
+		utils.ReadEnvString("GITHUB_REPOSITORY"),
+	)
+	if err != nil {
+		errorLogger.Printf("Failed to read repository metadata: %s", err.Error())
+		os.Exit(1)
+	}
+	event, err := entity.ReadEvent(os.DirFS("/"))
+	if err != nil {
+		errorLogger.Printf("Failed to read repository event: %s", err.Error())
+		os.Exit(1)
+	}
 
-	client := internal.NewGithubClient(cfg.Token)
+	client := internal.NewGithubClient(ctx, cfg.Token)
+
+	issue, err := client.GetIssue(ctx, meta, event.Number)
+	if err != nil {
+		errorLogger.Printf("Failed to get issue: %s", err.Error())
+		os.Exit(1)
+	}
+
+	dictionary := repository.GetDictionary(
+		os.DirFS(fmt.Sprintf("%s/%s", cwd, "dict")),
+		cfg.Preset,
+	)
+
+	if len(cfg.Dictionary) > 0 {
+		utils.MergeDictionary(&cfg.Dictionary, &dictionary)
+	}
 }

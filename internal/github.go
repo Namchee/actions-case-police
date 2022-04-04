@@ -19,9 +19,7 @@ type githubClient struct {
 }
 
 // NewGithubClient creates a GitHub API client wrapper
-func NewGithubClient(token string) GithubClient {
-	ctx := context.Background()
-
+func NewGithubClient(ctx context.Context, token string) GithubClient {
 	ts := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: token},
 	)
