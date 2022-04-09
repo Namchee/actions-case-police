@@ -21,6 +21,7 @@ type Configuration struct {
 	Token      string
 	Fix        bool
 	Preset     []string
+	Exclude    []string
 	Dictionary map[string]string
 }
 
@@ -46,6 +47,11 @@ func ReadConfiguration() (*Configuration, error) {
 
 	customDict := utils.ReadEnvString("INPUT_DICTIONARY")
 	var dictionary map[string]string
+
+	exclusion := utils.ReadEnvStringArray("INPUT_EXCLUDE")
+	if len(exclusion) > 0 {
+		config.Exclude = exclusion
+	}
 
 	err := json.Unmarshal([]byte(customDict), &dictionary)
 	if err == nil {

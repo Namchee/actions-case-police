@@ -45,6 +45,7 @@ func TestReadConfiguration(t *testing.T) {
 				"INPUT_FIX":          "true",
 				"INPUT_PRESET":       "foo bar",
 				"INPUT_DICTIONARY":   "{\"foo\": \"bar\"}",
+				"INPUT_EXCLUSION":    "github,gitlab",
 			},
 			want: expected{
 				config: &Configuration{
@@ -60,6 +61,7 @@ func TestReadConfiguration(t *testing.T) {
 					Dictionary: map[string]string{
 						"foo": "bar",
 					},
+					Exclude: []string{"github", "gitlab"},
 				},
 				err: nil,
 			},
