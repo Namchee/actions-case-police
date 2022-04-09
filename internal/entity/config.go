@@ -29,7 +29,6 @@ type Configuration struct {
 // from workflow definition
 func ReadConfiguration() (*Configuration, error) {
 	token := utils.ReadEnvString("INPUT_GITHUB_TOKEN")
-
 	if token == "" {
 		return nil, errors.New("Missing GitHub token")
 	}

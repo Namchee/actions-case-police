@@ -25,9 +25,9 @@ func TestReadEnvBool(t *testing.T) {
 			want:      false,
 		},
 		{
-			name:      "should fallback to false",
+			name:      "should fallback to true",
 			mockValue: "bar",
-			want:      false,
+			want:      true,
 		},
 	}
 

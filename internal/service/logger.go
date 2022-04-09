@@ -1,10 +1,13 @@
-package utils
+package service
 
-import "github.com/fatih/color"
+import (
+	"github.com/Namchee/actions-case-police/internal/entity"
+	"github.com/fatih/color"
+)
 
 // LogResult logs the result to console
 func LogResult(
-	result *IssueData,
+	result *entity.IssueData,
 ) {
 	green := color.New(color.FgCyan)
 

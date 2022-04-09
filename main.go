@@ -9,6 +9,7 @@ import (
 	"github.com/Namchee/actions-case-police/internal"
 	"github.com/Namchee/actions-case-police/internal/entity"
 	"github.com/Namchee/actions-case-police/internal/repository"
+	"github.com/Namchee/actions-case-police/internal/service"
 	"github.com/Namchee/actions-case-police/internal/utils"
 )
 
@@ -69,7 +70,7 @@ func main() {
 		utils.RemoveEntries(&cfg.Dictionary, cfg.Exclude)
 	}
 
-	result := utils.PolicizeIssue(issue, cfg.Dictionary)
+	result := service.PolicizeIssue(issue, cfg)
 
 	if len(result.Changes) > 0 {
 		err = client.EditIssue(ctx, meta, event.Number, result)
@@ -81,5 +82,5 @@ func main() {
 		}
 	}
 
-	utils.LogResult(result)
+	service.LogResult(result)
 }

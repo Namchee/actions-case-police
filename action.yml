@@ -1,0 +1,15 @@
+name: Case Police
+description: "Use the correct case please!"
+author: "Cristopher Namchee"
+inputs:
+  access_token:
+    description: "GitHub account access token"
+    required: true
+  fix:
+    
+runs:
+  using: docker
+  image: "Dockerfile"
+branding:
+  icon: "compass"
+  color: "gray-dark"

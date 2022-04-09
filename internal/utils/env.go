@@ -7,13 +7,13 @@ import (
 )
 
 // ReadEnvBool read and parse boolean environment variables.
-// Will return `false` if the variable is not a `bool`
+// Will return `true` if the variable cannot be parsed
 func ReadEnvBool(key string) bool {
 	value := os.Getenv(key)
 	parsed, err := strconv.ParseBool(value)
 
 	if err != nil {
-		return false
+		return true
 	}
 
 	return parsed
