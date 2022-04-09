@@ -12,12 +12,20 @@ import (
 	"github.com/Namchee/actions-case-police/internal/utils"
 )
 
+var (
+	logger *log.Logger
+)
+
+func init() {
+	logger = log.New(os.Stderr, "[ERROR] ", log.Ldate|log.Ltime|log.Lmsgprefix)
+}
+
 func main() {
 	ctx := context.Background()
 
 	cfg, err := entity.ReadConfiguration()
 	if err != nil {
-		log.Fatalln(
+		logger.Fatalln(
 			fmt.Sprintf("Failed to read action configuration: %w", err),
 		)
 	}
@@ -28,13 +36,13 @@ func main() {
 		utils.ReadEnvString("GITHUB_REPOSITORY"),
 	)
 	if err != nil {
-		log.Fatalln(
+		logger.Fatalln(
 			fmt.Sprintf("Failed to read metadata: %w", err),
 		)
 	}
 	event, err := entity.ReadEvent(os.DirFS("/"))
 	if err != nil {
-		log.Fatalln(
+		logger.Fatalln(
 			fmt.Sprintf("Failed to read repository event: %w", err),
 		)
 	}
@@ -43,7 +51,7 @@ func main() {
 
 	issue, err := client.GetIssue(ctx, meta, event.Number)
 	if err != nil {
-		log.Fatalln(
+		logger.Fatalln(
 			fmt.Sprintf("Failed to get issue data: %w", err),
 		)
 	}
