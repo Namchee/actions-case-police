@@ -82,5 +82,5 @@ func main() {
 		}
 	}
 
-	service.LogResult(result)
+	service.LogResult(result, cfg)
 }
