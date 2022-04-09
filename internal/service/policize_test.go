@@ -12,7 +12,7 @@ func TestPolicizeIssue(t *testing.T) {
 	sampleTitle := "github gitlab vscode"
 	sampleBodyReplace := `## Overview
 	
-	Lorem ipsum dolor sil github gitlab vscode.`
+	Lorem ipsum dolor sil GITHUB Gitlab vScOdE.`
 	sampleBodyNoReplace := `## Overview
 	
 	Lorem ipsum dolor sil githubgitlabvscode.`

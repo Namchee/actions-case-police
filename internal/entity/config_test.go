@@ -41,7 +41,7 @@ func TestReadConfiguration(t *testing.T) {
 		{
 			name: "should fallback to default preset on illegal values",
 			mocks: map[string]string{
-				"INPUT_GITHUB_TOKEN": "foo_bar",
+				"INPUT_ACCESS_TOKEN": "foo_bar",
 				"INPUT_FIX":          "true",
 				"INPUT_PRESET":       "foo bar",
 				"INPUT_DICTIONARY":   "{\"foo\": \"bar\"}",
