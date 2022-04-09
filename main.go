@@ -26,7 +26,7 @@ func main() {
 	cfg, err := entity.ReadConfiguration()
 	if err != nil {
 		logger.Fatalln(
-			fmt.Sprintf("Failed to read action configuration: %w", err),
+			fmt.Errorf("Failed to read action configuration: %w", err),
 		)
 	}
 
@@ -37,13 +37,13 @@ func main() {
 	)
 	if err != nil {
 		logger.Fatalln(
-			fmt.Sprintf("Failed to read metadata: %w", err),
+			fmt.Errorf("Failed to read metadata: %w", err),
 		)
 	}
 	event, err := entity.ReadEvent(os.DirFS("/"))
 	if err != nil {
 		logger.Fatalln(
-			fmt.Sprintf("Failed to read repository event: %w", err),
+			fmt.Errorf("Failed to read repository event: %w", err),
 		)
 	}
 
@@ -52,7 +52,7 @@ func main() {
 	issue, err := client.GetIssue(ctx, meta, event.Number)
 	if err != nil {
 		logger.Fatalln(
-			fmt.Sprintf("Failed to get issue data: %w", err),
+			fmt.Errorf("Failed to get issue data: %w", err),
 		)
 	}
 
@@ -70,4 +70,16 @@ func main() {
 	}
 
 	result := utils.PolicizeIssue(issue, cfg.Dictionary)
+
+	if len(result.Changes) > 0 {
+		err = client.EditIssue(ctx, meta, event.Number, result)
+
+		if err != nil {
+			log.Fatalln(
+				fmt.Errorf("Failed to edit issue: %w", err),
+			)
+		}
+	}
+
+	utils.LogResult(result)
 }
