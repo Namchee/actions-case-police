@@ -8,8 +8,8 @@ import (
 
 func TestMergeDictionary(t *testing.T) {
 	type args struct {
-		a *map[string]string
-		b *map[string]string
+		src  *map[string]string
+		dest *map[string]string
 	}
 
 	tests := []struct {
@@ -20,10 +20,10 @@ func TestMergeDictionary(t *testing.T) {
 		{
 			name: "should merge two map into one",
 			args: args{
-				a: &map[string]string{
+				src: &map[string]string{
 					"foo": "bar",
 				},
-				b: &map[string]string{
+				dest: &map[string]string{
 					"bar": "baz",
 				},
 			},
@@ -35,10 +35,10 @@ func TestMergeDictionary(t *testing.T) {
 		{
 			name: "should replace map contents",
 			args: args{
-				a: &map[string]string{
+				src: &map[string]string{
 					"foo": "bar",
 				},
-				b: &map[string]string{
+				dest: &map[string]string{
 					"foo": "baz",
 				},
 			},
@@ -49,10 +49,10 @@ func TestMergeDictionary(t *testing.T) {
 		{
 			name: "should not modify anything",
 			args: args{
-				a: &map[string]string{
+				src: &map[string]string{
 					"foo": "bar",
 				},
-				b: &map[string]string{},
+				dest: &map[string]string{},
 			},
 			want: &map[string]string{
 				"foo": "bar",
@@ -62,12 +62,62 @@ func TestMergeDictionary(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			a := tc.args.a
-			b := tc.args.b
+			src := tc.args.src
+			dest := tc.args.dest
 
-			MergeDictionary(a, b)
+			MergeDictionary(src, dest)
 
-			assert.Equal(t, tc.want, a)
+			assert.Equal(t, tc.want, src)
+		})
+	}
+}
+
+func TestRemoveEntries(t *testing.T) {
+	type args struct {
+		src       *map[string]string
+		exclusion []string
+	}
+
+	tests := []struct {
+		name string
+		args args
+		want *map[string]string
+	}{
+		{
+			name: "should remove one of the key",
+			args: args{
+				src: &map[string]string{
+					"github": "bar",
+					"gitlab": "baz",
+				},
+				exclusion: []string{"github"},
+			},
+			want: &map[string]string{
+				"gitlab": "baz",
+			},
+		},
+		{
+			name: "should do nothing",
+			args: args{
+				src: &map[string]string{
+					"foo": "bar",
+				},
+				exclusion: []string{"bar"},
+			},
+			want: &map[string]string{
+				"foo": "bar",
+			},
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			src := tc.args.src
+			exclude := tc.args.exclusion
+
+			RemoveEntries(src, exclude)
+
+			assert.Equal(t, tc.want, src)
 		})
 	}
 }
