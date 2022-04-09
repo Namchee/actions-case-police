@@ -62,4 +62,8 @@ func main() {
 	if len(cfg.Dictionary) > 0 {
 		utils.MergeDictionary(&cfg.Dictionary, &dictionary)
 	}
+
+	if len(cfg.Exclude) > 0 {
+		utils.RemoveEntries(&cfg.Dictionary, cfg.Exclude)
+	}
 }
