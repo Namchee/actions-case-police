@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/Namchee/actions-case-police/internal/entity"
+	"github.com/Namchee/actions-case-police/internal/utils"
 	"github.com/google/go-github/v43/github"
 	"golang.org/x/oauth2"
 )
@@ -11,7 +12,7 @@ import (
 // GithubClient is interface to interact with GitHub REST API v3
 type GithubClient interface {
 	GetIssue(context.Context, *entity.Meta, int) (*github.Issue, error)
-	EditIssue(context.Context, *entity.Meta, int, *entity.IssueData) error
+	EditIssue(context.Context, *entity.Meta, int, *utils.IssueData) error
 }
 
 type githubClient struct {
@@ -43,7 +44,7 @@ func (cl *githubClient) EditIssue(
 	ctx context.Context,
 	meta *entity.Meta,
 	number int,
-	issue *entity.IssueData,
+	issue *utils.IssueData,
 ) error {
 	_, _, err := cl.client.Issues.Edit(
 		ctx,
