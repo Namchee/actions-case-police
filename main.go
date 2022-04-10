@@ -39,7 +39,7 @@ func main() {
 			fmt.Errorf("Failed to read metadata: %w", err),
 		)
 	}
-	event, err := entity.ReadEvent(os.DirFS("/"))
+	event, err := utils.GetEventNumber(os.DirFS("/"))
 	if err != nil {
 		logger.Fatalln(
 			fmt.Errorf("Failed to read repository event: %w", err),
@@ -48,7 +48,7 @@ func main() {
 
 	client := internal.NewGithubClient(ctx, cfg.Token)
 
-	issue, err := client.GetIssue(ctx, meta, event.Number)
+	issue, err := client.GetIssue(ctx, meta, event)
 	if err != nil {
 		logger.Fatalln(
 			fmt.Errorf("Failed to get issue data: %w", err),
@@ -69,7 +69,7 @@ func main() {
 	result := service.PolicizeIssue(issue, cfg)
 
 	if len(result.Changes) > 0 {
-		err = client.EditIssue(ctx, meta, event.Number, result)
+		err = client.EditIssue(ctx, meta, event, result)
 
 		if err != nil {
 			log.Fatalln(

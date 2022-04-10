@@ -1,4 +1,4 @@
-package entity
+package utils
 
 import (
 	"errors"
@@ -11,7 +11,7 @@ import (
 
 func TestReadEvent(t *testing.T) {
 	type want struct {
-		event *Event
+		event int
 		err   error
 	}
 	tests := []struct {
@@ -25,7 +25,7 @@ func TestReadEvent(t *testing.T) {
 			path:     `/://///`,
 			mockFile: []byte(`{ "foo": "bar" }`),
 			want: want{
-				event: nil,
+				event: 0,
 				err:   errors.New("Failed to read event file"),
 			},
 		},
@@ -34,20 +34,26 @@ func TestReadEvent(t *testing.T) {
 			path:     "/test.json",
 			mockFile: []byte(`{ foo: "bar" }`),
 			want: want{
-				event: nil,
+				event: 0,
 				err:   errors.New("Failed to parse event file"),
 			},
 		},
 		{
-			name:     "should return correctly",
+			name:     "should return correctly on pull request events",
 			path:     "/test.json",
 			mockFile: []byte(`{ "action": "opened", "number": 1 }`),
 			want: want{
-				event: &Event{
-					Action: "opened",
-					Number: 1,
-				},
-				err: nil,
+				event: 1,
+				err:   nil,
+			},
+		},
+		{
+			name:     "should return correctly on issue events",
+			path:     "/test.json",
+			mockFile: []byte(`{ "action": "opened", "issue": { "number": 2 } }`),
+			want: want{
+				event: 2,
+				err:   nil,
 			},
 		},
 	}
@@ -63,7 +69,7 @@ func TestReadEvent(t *testing.T) {
 				},
 			}
 
-			got, err := ReadEvent(mock)
+			got, err := GetEventNumber(mock)
 
 			assert.Equal(t, tc.want.event, got)
 			assert.Equal(t, tc.want.err, err)
