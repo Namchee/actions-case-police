@@ -1,6 +1,6 @@
 FROM golang:1.17
 
-WORKDIR /case-police
+WORKDIR /
 
 COPY go.mod .
 COPY go.sum .
@@ -11,6 +11,6 @@ COPY . .
 
 RUN go build -a -o main .
 
-RUN chmod +x /case-police/main
+RUN chmod +x /main
 
-CMD ["/case-police/main"]
+CMD ["/main"]
