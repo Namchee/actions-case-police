@@ -31,8 +31,6 @@ func main() {
 		)
 	}
 
-	cwd, _ := os.Getwd()
-
 	meta, err := entity.CreateMeta(
 		utils.ReadEnvString("GITHUB_REPOSITORY"),
 	)
@@ -57,8 +55,9 @@ func main() {
 		)
 	}
 
+	actionPath := utils.ReadEnvString("GITHUB_ACTION_PATH")
 	dictionary := repository.GetDictionary(
-		os.DirFS(fmt.Sprintf("%s/%s", cwd, "dict")),
+		os.DirFS(fmt.Sprintf("%s/%s", actionPath, "dict")),
 		cfg.Preset,
 	)
 
