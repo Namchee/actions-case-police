@@ -3,7 +3,9 @@ package entity
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/fs"
+	"io/ioutil"
 
 	"github.com/Namchee/actions-case-police/internal/utils"
 )
@@ -27,6 +29,9 @@ func ReadEvent(fsys fs.FS) (*Event, error) {
 	}
 
 	var event Event
+
+	b, err := ioutil.ReadAll(file)
+	fmt.Println(b)
 
 	if err := json.NewDecoder(file).Decode(&event); err != nil {
 		return nil, errors.New("Failed to parse event file")

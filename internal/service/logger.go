@@ -24,7 +24,7 @@ func LogResult(
 		yellow := color.New(color.FgYellow)
 
 		for k, v := range result.Changes {
-			yellow.Printf("%s ➔", k)
+			yellow.Printf("%s ➔ ", k)
 			green.Printf("%s\n", v)
 		}
 	} else {
