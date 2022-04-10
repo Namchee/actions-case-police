@@ -16,6 +16,9 @@ func PolicizeIssue(
 	title := issue.GetTitle()
 	body := issue.GetBody()
 
+	fmt.Println(title)
+	fmt.Println(body)
+
 	changes := map[string]string{}
 
 	for entry, replacer := range cfg.Dictionary {
@@ -26,6 +29,7 @@ func PolicizeIssue(
 		found := false
 
 		if regex.Match([]byte(title)) || regex.Match([]byte(body)) {
+			fmt.Printf("found for %s\n", entry)
 			found = true
 
 			if cfg.Fix {
