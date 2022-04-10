@@ -34,9 +34,10 @@ func ReadConfiguration() (*Configuration, error) {
 	}
 
 	config := &Configuration{
-		Token:  token,
-		Fix:    utils.ReadEnvBool("INPUT_FIX"),
-		Preset: defaultPreset,
+		Token:      token,
+		Fix:        utils.ReadEnvBool("INPUT_FIX"),
+		Preset:     defaultPreset,
+		Dictionary: map[string]string{},
 	}
 
 	preset := validatePresets(utils.ReadEnvStringArray("INPUT_PRESET"))
@@ -45,7 +46,7 @@ func ReadConfiguration() (*Configuration, error) {
 	}
 
 	customDict := utils.ReadEnvString("INPUT_DICTIONARY")
-	var dictionary map[string]string
+	dictionary := map[string]string{}
 
 	exclusion := utils.ReadEnvStringArray("INPUT_EXCLUDE")
 	if len(exclusion) > 0 {

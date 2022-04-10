@@ -21,7 +21,7 @@ func TestReadConfiguration(t *testing.T) {
 		{
 			name: "should read config correctly",
 			mocks: map[string]string{
-				"INPUT_GITHUB_TOKEN": "foo_bar",
+				"INPUT_ACCESS_TOKEN": "foo_bar",
 				"INPUT_FIX":          "true",
 				"INPUT_PRESET":       "abbreviates, brands",
 				"INPUT_DICTIONARY":   "{\"foo\": \"bar\"}",
@@ -45,7 +45,7 @@ func TestReadConfiguration(t *testing.T) {
 				"INPUT_FIX":          "true",
 				"INPUT_PRESET":       "foo bar",
 				"INPUT_DICTIONARY":   "{\"foo\": \"bar\"}",
-				"INPUT_EXCLUSION":    "github,gitlab",
+				"INPUT_EXCLUDE":      "github,gitlab",
 			},
 			want: expected{
 				config: &Configuration{
