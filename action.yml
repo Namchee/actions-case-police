@@ -6,7 +6,21 @@ inputs:
     description: "GitHub account access token"
     required: true
   fix:
-    
+    description: "Determines if possible case fixes should be applied automatically"
+    required: false
+    default: true
+  preset:
+    description: "Dictionary names to be used when validating word cases"
+    required: false
+    default: ""
+  exclude:
+    description: "Words to be whitelisted on case police"
+    required: false
+    default: ""
+  dictionary:
+    description: "Stringified JSON map that represents custom entiries for dictionary that will be used on case police"
+    required: false
+    default: ""
 runs:
   using: docker
   image: "Dockerfile"
