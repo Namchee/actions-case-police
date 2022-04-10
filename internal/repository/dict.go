@@ -31,6 +31,8 @@ func parseDictionaryFile(fsys fs.FS, filename string) map[string]string {
 	var data map[string]string
 	err = json.NewDecoder(file).Decode(&data)
 
+	fmt.Println(data)
+
 	if err != nil {
 		return map[string]string{}
 	}
