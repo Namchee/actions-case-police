@@ -22,7 +22,7 @@ func GetDictionary(fsys fs.FS, files []string) map[string]string {
 }
 
 func parseDictionaryFile(fsys fs.FS, filename string) map[string]string {
-	file, err := fsys.Open(filename)
+	file, err := fsys.Open(fmt.Sprintf("%s.json", filename))
 
 	fmt.Println(err)
 
